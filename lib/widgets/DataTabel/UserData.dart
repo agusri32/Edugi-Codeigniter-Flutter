@@ -245,44 +245,24 @@ class DataTabelState extends State<DataTabel> {
               ),
             ),
 
-            Container(
-              width: 350,
-              child: Align(
-                alignment: Alignment.topRight,
-                child: FlatButton(
-                  color: Colors.blueAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                  textColor: Colors.white,
-                  child: Text("Log Out"),
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginUser())
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            Container(
-              margin: const EdgeInsets.only(top: 30.0, bottom: 20.0),
-              child: Center(
-                child: Text(
-                  'DATA USER',
-                  style: new TextStyle(
-                    //decoration: TextDecoration.underline,
-                    decorationStyle: TextDecorationStyle.double,
-                    fontSize: 30.0,
-                    color: Colors.deepPurpleAccent
-                  ),
-                ),
-              ),
-            ),
-            _isUpdating
-                ? Row(
+            //untuk tombol form
+            Row(
               children: <Widget>[
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  child: FlatButton(
+                    padding: EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0)
+                    ),
+                    color: Colors.lightGreen,
+                    textColor: Colors.white,
+                    child: Text('SAVE'),
+                    onPressed: () {
+                      _addUser();
+                    },
+                  ),
+                ),
 
                 Container(
                   padding: const EdgeInsets.all(15.0),
@@ -320,11 +300,48 @@ class DataTabelState extends State<DataTabel> {
                 ),
 
               ],
-            )
-                : Container(),
+            ),
+
+            Container(
+              margin: const EdgeInsets.only(top: 30.0, bottom: 20.0),
+              child: Center(
+                child: Text(
+                  'DATA USER',
+                  style: new TextStyle(
+                    //decoration: TextDecoration.underline,
+                    decorationStyle: TextDecorationStyle.double,
+                    fontSize: 30.0,
+                    color: Colors.deepPurpleAccent
+                  ),
+                ),
+              ),
+            ),
+
+            Container(
+              width: 350,
+              child: Align(
+                alignment: Alignment.topRight,
+                child: FlatButton(
+                  color: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  textColor: Colors.white,
+                  child: Text("LOGOUT"),
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginUser())
+                    );
+                  },
+                ),
+              ),
+            ),
+
             Expanded(
               child: _dataBody(),
             )
+
           ],
         ),
       ),
