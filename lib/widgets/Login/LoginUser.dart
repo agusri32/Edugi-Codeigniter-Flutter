@@ -30,12 +30,12 @@ class LoginUserState extends State{
     String email = emailController.text;
     String password = passwordController.text;
 
-    var url = 'http://10.0.2.2:88/web_login/login.php';
+    var url = 'http://10.0.2.2:88/web_restapi/login.php';
     var data = {'email': email, 'password' : password};
     var response = await http.post(url, body: json.encode(data));
     var message = jsonDecode(response.body);
 
-    if(message == 'Masukkan Email dan Password' && email != '' && password != '')
+    if(message == 'Berhasil Login' && email != '' && password != '')
     {
       setState(() {
         visible = false;
