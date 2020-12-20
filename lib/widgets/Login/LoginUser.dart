@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:datauser/widgets/DataTabel/UserData.dart';
+//import 'package:datauser/widgets/DataTabel/UserData.dart';
+import 'package:datauser/widgets/DataTabel/UserForm.dart';
 
 class LoginUser extends StatefulWidget{
   LoginUserState createState() => LoginUserState();
@@ -45,7 +46,7 @@ class LoginUserState extends State{
       //saat berhasil login
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DataTabel())
+          MaterialPageRoute(builder: (context) => DataForm())
       );
 
     }else{
@@ -111,7 +112,6 @@ class LoginUserState extends State{
                                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white)
                                 )
                             ),
-
 
                             Divider(),
 

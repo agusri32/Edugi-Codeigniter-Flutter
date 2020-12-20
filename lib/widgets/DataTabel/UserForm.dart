@@ -1,19 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:datauser/widgets/Login/LoginUser.dart';
 import 'package:datauser/widgets/DataTabel/User.dart';
-import 'package:datauser/widgets/DataTabel/Userform.dart';
+import 'package:datauser/widgets/DataTabel/UserData.dart';
 import 'package:datauser/widgets/DataTabel/UserServices.dart';
 
-class DataTabel extends StatefulWidget {
-  DataTabel() : super();
+class DataForm extends StatefulWidget {
+  DataForm() : super();
 
-  final String title = "View Data User";
+  final String title = "Form Data User";
 
   @override
   DataTabelState createState() => DataTabelState();
 }
 
-class DataTabelState extends State<DataTabel> {
+class DataTabelState extends State<DataForm> {
   List<User> _users;
   GlobalKey<ScaffoldState> _scaffoldKey;
   TextEditingController _namaController;
@@ -266,22 +265,6 @@ class DataTabelState extends State<DataTabel> {
                 ),
 
                 Container(
-                  padding: const EdgeInsets.all(15.0),
-                  child: FlatButton(
-                    padding: EdgeInsets.all(8.0),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)
-                    ),
-                    color: Colors.blueAccent,
-                    textColor: Colors.white,
-                    child: Text('UPDATE'),
-                    onPressed: () {
-                      _updateUser(_selectedUser);
-                    },
-                  ),
-                ),
-
-                Container(
                   padding: const EdgeInsets.all((15.0)),
                   child: FlatButton(
                     color: Colors.lightBlueAccent,
@@ -292,10 +275,10 @@ class DataTabelState extends State<DataTabel> {
                     ),
                     child: Text('CANCEL'),
                     onPressed: () {
-                      setState(() {
-                        _isUpdating = false;
-                      });
-                      _clearValues();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => DataTabel())
+                      );
                     },
                   ),
                 ),
@@ -303,61 +286,9 @@ class DataTabelState extends State<DataTabel> {
               ],
             ),
 
-            Container(
-              margin: const EdgeInsets.only(top: 30.0, bottom: 20.0),
-              child: Center(
-                child: Text(
-                  'DATA USER',
-                  style: new TextStyle(
-                    //decoration: TextDecoration.underline,
-                    decorationStyle: TextDecorationStyle.double,
-                    fontSize: 30.0,
-                    color: Colors.deepPurpleAccent
-                  ),
-                ),
-              ),
-            ),
-
-            Container(
-              width: 350,
-              child: Align(
-                alignment: Alignment.topRight,
-                child: FlatButton(
-                  color: Colors.redAccent,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(18.0),
-                  ),
-                  textColor: Colors.white,
-                  child: Text("LOGOUT"),
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginUser())
-                    );
-                  },
-                ),
-              ),
-            ),
-
-            Expanded(
-              child: _dataBody(),
-            )
-
           ],
         ),
       ),
-
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.lightBlueAccent,
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DataForm())
-          );
-        },
-        child: Icon(Icons.add),
-      ),
-
     );
   }
 }
