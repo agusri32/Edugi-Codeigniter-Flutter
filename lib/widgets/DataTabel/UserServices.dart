@@ -4,10 +4,10 @@ import 'package:datauser/widgets/DataTabel/User.dart';
 
 class UserServices {
   static const ROOT = 'http://10.0.2.2:88/web_restapi/action.php';
-  static const String _GET_ACTION = 'GET_ALL';
-  static const String _ADD_ACTION = 'ADD_PAS';
-  static const String _UPDATE_ACTION = 'UPDATE_PAS';
-  static const String _DELETE_ACTION = 'DELETE_PAS';
+  static const String _GET_ACTION = 'GET_DATA';
+  static const String _ADD_ACTION = 'ADD_DATA';
+  static const String _UPDATE_ACTION = 'UPDATE_DATA';
+  static const String _DELETE_ACTION = 'DELETE_DATA';
 
   static Future<List<User>> getUsers() async {
     try {
