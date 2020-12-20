@@ -1,23 +1,22 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:pasien/widgets/DataTabel/User.dart';
+import 'package:datauser/widgets/DataTabel/User.dart';
 
-class PasienServices {
-  static const ROOT = 'http://10.0.2.2:88/web_login/action.php';
+class UserServices {
+  static const ROOT = 'http://10.0.2.2:88/web_restapi/action.php';
   static const String _GET_ACTION = 'GET_ALL';
-  static const String _CREATE_TABLE = 'CREATE_TABLE';
-  static const String _ADD_PAS_ACTION = 'ADD_PAS';
-  static const String _UPDATE_PAS_ACTION = 'UPDATE_PAS';
-  static const String _DELETE_PAS_ACTION = 'DELETE_PAS';
+  static const String _ADD_ACTION = 'ADD_PAS';
+  static const String _UPDATE_ACTION = 'UPDATE_PAS';
+  static const String _DELETE_ACTION = 'DELETE_PAS';
 
-  static Future<List<User>> getPasiens() async {
+  static Future<List<User>> getUsers() async {
     try {
       var map = new Map<String, dynamic>();
       map["action"] = _GET_ACTION;
       final response = await http.post(ROOT, body: map);
-      print("getPasiens >> Response:: ${response.body}");
+      print("getUsers >> Response:: ${response.body}");
       if (response.statusCode == 200) {
-        List<User> list = parsePhotos(response.body);
+        List<User> list = parseData(response.body);
         return list;
       } else {
         throw List<User>();
@@ -27,60 +26,48 @@ class PasienServices {
     }
   }
 
-  static List<User> parsePhotos(String responseBody) {
+  static List<User> parseData(String responseBody) {
     final parsed = json.decode(responseBody).cast<Map<String, dynamic>>();
     return parsed.map<User>((json) => User.fromJson(json)).toList();
   }
 
-  static Future<String> createTable() async {
+  static Future<String> addUser(String user_nama, String user_nik) async {
     try {
       var map = new Map<String, dynamic>();
-      map["action"] = _CREATE_TABLE;
+      map["action"] = _ADD_ACTION;
+      map["user_nama"] = user_nama;
+      map["user_nik"] = user_nik;
       final response = await http.post(ROOT, body: map);
-      print("createTable >> Response:: ${response.body}");
+      print("addUser >> Response:: ${response.body}");
       return response.body;
     } catch (e) {
       return 'error';
     }
   }
 
-  static Future<String> addPasien(String identitas, String status) async {
+  static Future<String> updateUser(
+      String user_id, String user_nama, String user_nik) async {
     try {
       var map = new Map<String, dynamic>();
-      map["action"] = _ADD_PAS_ACTION;
-      map["identitas"] = identitas;
-      map["status"] = status;
+      map["action"] = _UPDATE_ACTION;
+      map["user_id"] = user_id;
+      map["user_nama"] = user_nama;
+      map["user_nik"] = user_nik;
       final response = await http.post(ROOT, body: map);
-      print("addPasien >> Response:: ${response.body}");
+      print("updateUser >> Response:: ${response.body}");
       return response.body;
     } catch (e) {
       return 'error';
     }
   }
 
-  static Future<String> updatePasien(
-      String empId, String identitas, String status) async {
+  static Future<String> deleteUser(String user_id) async {
     try {
       var map = new Map<String, dynamic>();
-      map["action"] = _UPDATE_PAS_ACTION;
-      map["emp_id"] = empId;
-      map["identitas"] = identitas;
-      map["status"] = status;
+      map["action"] = _DELETE_ACTION;
+      map["user_id"] = user_id;
       final response = await http.post(ROOT, body: map);
-      print("deletePasien >> Response:: ${response.body}");
-      return response.body;
-    } catch (e) {
-      return 'error';
-    }
-  }
-
-  static Future<String> deletePasien(String empId) async {
-    try {
-      var map = new Map<String, dynamic>();
-      map["action"] = _DELETE_PAS_ACTION;
-      map["emp_id"] = empId;
-      final response = await http.post(ROOT, body: map);
-      print("deletePasien >> Response:: ${response.body}");
+      print("deleteUser >> Response:: ${response.body}");
       return response.body;
     } catch (e) {
       return 'error';

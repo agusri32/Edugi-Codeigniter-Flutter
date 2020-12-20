@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:pasien/widgets/DataTabel/PasienData.dart';
-import 'package:pasien/widgets/Login/LoginUser.dart';
+import 'package:datauser/widgets/Login/LoginUser.dart';
 
 void main() => runApp(MyApp());
 

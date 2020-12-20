@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:pasien/widgets/DataTabel/UserData.dart';
+import 'package:datauser/widgets/DataTabel/UserData.dart';
 
 class LoginUser extends StatefulWidget{
   LoginUserState createState() => LoginUserState();
@@ -37,20 +37,24 @@ class LoginUserState extends State{
 
     if(message == 'Berhasil Login' && email != '' && password != '')
     {
+
       setState(() {
         visible = false;
       });
 
+      //saat berhasil login
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DataTabelDemo())
+          MaterialPageRoute(builder: (context) => DataTabel())
       );
+
     }else{
 
       setState(() {
         visible = false;
       });
 
+      //notifikasi saat gagal login
       showDialog(
         context: context,
         builder: (BuildContext context) {
@@ -66,55 +70,17 @@ class LoginUserState extends State{
             ],
           );
         },
-      );}
+      );
 
-  }
-
-  Future<bool> _onBackPressed() {
-    return showDialog(
-      context: context,
-      builder: (context){
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20)
-          ),
-          content: Text('Anda yakin ingin keluar ?'),
-          actions: <Widget>[
-            FlatButton(
-              color: Colors.lightBlueAccent,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-              ),
-              child: Text('Tidak'),
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pop(false);
-              },
-            ),
-            FlatButton(
-              color: Colors.blueAccent,
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10)
-              ),
-              child: Text('Ya'),
-              textColor: Colors.white,
-              onPressed: () {
-                Navigator.of(context).pop(true);
-              },
-            )
-          ],
-        );
-      },
-    );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return WillPopScope(
-      onWillPop: _onBackPressed,
       child: Scaffold(
           body: Container(decoration: new BoxDecoration(
-            gradient: new LinearGradient(colors: [const Color(0xFF915FB5),const Color(0xFFCA436B)],
+            gradient: new LinearGradient(colors: [const Color(0xFFCA436B),const Color(0xFFCA436B)],
                 begin: FractionalOffset.topLeft,
                 end: FractionalOffset.bottomRight,
                 stops: [0.0,1.0],
@@ -129,19 +95,11 @@ class LoginUserState extends State{
                 child: SingleChildScrollView(
                     child: Center(
                       child: Container(
-                       // margin: const EdgeInsets.all(100.0),
-                        padding: const EdgeInsets.all(10.0),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white,
-                            width: 5.0
-                            ),
-                          borderRadius: BorderRadius.all(Radius.circular(10.0))
-                        ),
                         child: Column(
                           children: <Widget>[
                             new Container(
                               child: new Image.asset(
-                                "assets/user.png",
+                                "assets/login.png",
                                 height: 150.0,
                                 width: 200.0,
                               ),

@@ -1,36 +1,36 @@
 import 'package:flutter/material.dart';
-import 'package:pasien/widgets/Login/LoginUser.dart';
-import 'package:pasien/widgets/DataTabel/User.dart';
-import 'package:pasien/widgets/DataTabel/UserServices.dart';
+import 'package:datauser/widgets/Login/LoginUser.dart';
+import 'package:datauser/widgets/DataTabel/User.dart';
+import 'package:datauser/widgets/DataTabel/UserServices.dart';
 
-class DataTabelDemo extends StatefulWidget {
-  DataTabelDemo() : super();
+class DataTabel extends StatefulWidget {
+  DataTabel() : super();
 
   final String title = "Pendataan User";
 
   @override
-  DataTabelDemoState createState() => DataTabelDemoState();
+  DataTabelState createState() => DataTabelState();
 }
 
-class DataTabelDemoState extends State<DataTabelDemo> {
-  List<User> _pasiens;
+class DataTabelState extends State<DataTabel> {
+  List<User> _users;
   GlobalKey<ScaffoldState> _scaffoldKey;
-  TextEditingController _identitasController;
-  TextEditingController _statusController;
-  User _selectedPasien;
+  TextEditingController _namaController;
+  TextEditingController _nikController;
+  User _selectedUser;
   bool _isUpdating;
   String _titleProgress;
 
   @override
   void initState() {
     super.initState();
-    _pasiens = [];
+    _users = [];
     _isUpdating = false;
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey();
-    _identitasController = TextEditingController();
-    _statusController = TextEditingController();
-    _getPasiens();
+    _namaController = TextEditingController();
+    _nikController = TextEditingController();
+    _getUsers();
   }
 
   _showProgress(String message) {
@@ -39,93 +39,73 @@ class DataTabelDemoState extends State<DataTabelDemo> {
     });
   }
 
-  _createTable() {
-    _showProgress('Perbarui Tabel...');
-    PasienServices.createTable().then((result) {
-      if ('success' == result) {
-        showSnackBar(context, result);
-        _getPasiens();
-      }
+  _getUsers() {
+    _showProgress('Loading Data...');
+    UserServices.getUsers().then((users) {
+      setState(() {
+        _users = users;
+      });
+      _showProgress(widget.title);
+      print("Length: ${users.length}");
     });
   }
 
-  _addPasien() {
-    if (_identitasController.text.trim().isEmpty ||
-        _statusController.text.trim().isEmpty) {
+  _addUser() {
+    if (_namaController.text.trim().isEmpty || _nikController.text.trim().isEmpty) {
       print("Kolom Kosong");
       return;
     }
     _showProgress('Menambahkan Data...');
-    PasienServices.addPasien(_identitasController.text, _statusController.text)
+    UserServices.addUser(_namaController.text, _nikController.text)
         .then((result) {
       if ('success' == result) {
-        _getPasiens();
+        _getUsers();
       }
       _clearValues();
     });
   }
 
-  _getPasiens() {
-    _showProgress('Loading Data...');
-    PasienServices.getPasiens().then((pasiens) {
-      setState(() {
-        _pasiens = pasiens;
-      });
-      _showProgress(widget.title);
-      print("Length: ${pasiens.length}");
-    });
-  }
-
-  _deletePasien(User user) {
-    _showProgress('Hapus Data...');
-    PasienServices.deletePasien(user.id).then((result) {
+  _updateUser(User user) {
+    _showProgress('Perbarui Data...');
+    UserServices.updateUser(
+        user.user_id, _namaController.text, _nikController.text)
+        .then((result) {
       if ('success' == result) {
-        AlertDialog alert = AlertDialog(
-            content: Text("Data Berhasil Dihapus"),);
+        _getUsers();
         setState(() {
-          _pasiens.remove(user);
+          _isUpdating = false;
         });
-        _getPasiens();
+        _namaController.text = '';
+        _nikController.text = '';
       }
     });
   }
 
-  _updatePasien(User user) {
-    _showProgress('Perbarui Data...');
-    PasienServices.updatePasien(
-        user.id, _identitasController.text, _statusController.text)
-        .then((result) {
+  _deleteUser(User user) {
+    _showProgress('Hapus Data...');
+    UserServices.deleteUser(user.user_id).then((result) {
       if ('success' == result) {
-        _getPasiens();
+        AlertDialog alert = AlertDialog(
+          content: Text("Data Berhasil Dihapus"),);
         setState(() {
-          _isUpdating = false;
+          _users.remove(user);
         });
-        _identitasController.text = '';
-        _statusController.text = '';
+        _getUsers();
       }
     });
   }
 
   _setValues(User user) {
-    _identitasController.text = user.identitas;
-    _statusController.text = user.status;
+    _namaController.text = user.user_nama;
+    _nikController.text = user.user_nik;
     setState(() {
       _isUpdating = true;
     });
   }
 
   _clearValues() {
-    _identitasController.text = '';
-    _statusController.text = '';
-  }
-
-  BoxDecoration myBoxDecoration() {
-    return BoxDecoration(
-        border: Border.all(
-            color: Colors.grey,
-            width: 1.0
-        ),
-    );
+    _namaController.text = '';
+    _nikController.text = '';
   }
 
   SingleChildScrollView _dataBody() {
@@ -134,72 +114,70 @@ class DataTabelDemoState extends State<DataTabelDemo> {
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Container(
-          decoration: myBoxDecoration(),
           padding: const EdgeInsets.all(10.0),
           child: DataTable(
             columns: [
               DataColumn(
                   label: Text("ID"),
-                  numeric: false,
-                  tooltip: "This is the employee id"),
+                  numeric: false),
               DataColumn(
-                  label: Text(
-                    "Identitas",
-                  ),
-                  numeric: false,
-                  tooltip: "Ini Kolom Identitas"),
+                  label: Text("NAMA LENGKAP"),
+                  numeric: false),
               DataColumn(
-                  label: Text("Status"),
-                  numeric: false,
-                  tooltip: "Ini Kolom Status"),
+                  label: Text("NOMOR NIK"),
+                  numeric: false),
               DataColumn(
-                  label: Text("DELETE"),
-                  numeric: false,
-                  tooltip: "Delete"),
+                  label: Text("OPTION"),
+                  numeric: false),
             ],
-            rows: _pasiens
+            rows: _users
                 .map(
-                  (pasien) => DataRow(
+                  (user) => DataRow(
                 cells: [
+
                   DataCell(
-                    Text(pasien.id),
+                    Text(user.user_id),
                     onTap: () {
-                      print("Tapped " + pasien.identitas);
-                      _setValues(pasien);
-                      _selectedPasien = pasien;
+                      print("Tapped " + user.user_nama);
+                      _setValues(user);
+                      _selectedUser = user;
                     },
                   ),
-                  DataCell(
-                    Text(
-                      pasien.identitas.toUpperCase(),
-                    ),
-                    onTap: () {
-                      print("Tapped " + pasien.identitas);
-                      _setValues(pasien);
-                      _selectedPasien = pasien;
-                    },
-                  ),
+
                   DataCell(
                     Text(
-                      pasien.status.toUpperCase(),
+                      user.user_nama.toUpperCase(),
                     ),
                     onTap: () {
-                      print("Tapped " + pasien.identitas);
-                      _setValues(pasien);
-                      _selectedPasien = pasien;
+                      print("Tapped " + user.user_nama);
+                      _setValues(user);
+                      _selectedUser = user;
                     },
                   ),
+
+                  DataCell(
+                    Text(
+                      user.user_nik.toUpperCase(),
+                    ),
+                    onTap: () {
+                      print("Tapped " + user.user_nama);
+                      _setValues(user);
+                      _selectedUser = user;
+                    },
+                  ),
+
                   DataCell(
                     IconButton(
                       icon: Icon(Icons.delete),
                       onPressed: () {
-                        _deletePasien(pasien);
+                        _deleteUser(user);
                       },
                     ),
                     onTap: () {
-                      print("Tapped " + pasien.identitas);
+                      print("Tapped " + user.user_nama);
                     },
                   ),
+
                 ],
               ),
             )
@@ -209,13 +187,6 @@ class DataTabelDemoState extends State<DataTabelDemo> {
       ),
     );
   }
-
-  showSnackBar(context, message) {
-    _scaffoldKey.currentState.showSnackBar(SnackBar(
-      content: Text(message),
-    ));
-  }
-
 
   @override
   Widget build(BuildContext context) {
@@ -227,28 +198,24 @@ class DataTabelDemoState extends State<DataTabelDemo> {
         title: Text(_titleProgress),
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add),
-            onPressed: () {
-              _createTable();
-            },
-          ),
-          IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              _getPasiens();
+              _getUsers();
             },
           ),
         ],
       ),
+
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
+
             Container(
               padding: EdgeInsets.all(20.0),
               child: TextField(
                 cursorColor: Colors.blueAccent,
-                controller: _identitasController,
+                controller: _namaController,
                 style: TextStyle(color: Colors.blueAccent),
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -260,22 +227,24 @@ class DataTabelDemoState extends State<DataTabelDemo> {
                 ),
               ),
             ),
+
             Container(
               padding: EdgeInsets.all(20.0),
               child: TextField(
                 cursorColor: Colors.blueAccent,
                 style: TextStyle(color: Colors.blueAccent),
-                controller: _statusController,
+                controller: _nikController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue,
                     width: 2.0)
                   ),
-                  labelText: "Status Keluarga",
+                  labelText: "Nomor NIK",
                   labelStyle: TextStyle(color: Colors.blueAccent)
                 ),
               ),
             ),
+
             Container(
               width: 350,
               child: Align(
@@ -296,6 +265,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
                 ),
               ),
             ),
+
             Container(
               margin: const EdgeInsets.only(top: 30.0, bottom: 20.0),
               child: Center(
@@ -313,6 +283,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
             _isUpdating
                 ? Row(
               children: <Widget>[
+
                 Container(
                   padding: const EdgeInsets.all(15.0),
                   child: FlatButton(
@@ -324,10 +295,11 @@ class DataTabelDemoState extends State<DataTabelDemo> {
                     textColor: Colors.white,
                     child: Text('UPDATE'),
                     onPressed: () {
-                      _updatePasien(_selectedPasien);
+                      _updateUser(_selectedUser);
                     },
                   ),
                 ),
+
                 Container(
                   padding: const EdgeInsets.all((15.0)),
                   child: FlatButton(
@@ -346,6 +318,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
                     },
                   ),
                 ),
+
               ],
             )
                 : Container(),
@@ -355,13 +328,15 @@ class DataTabelDemoState extends State<DataTabelDemo> {
           ],
         ),
       ),
+
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
-          _addPasien();
+          _addUser();
         },
         child: Icon(Icons.add),
       ),
+
     );
   }
 }
