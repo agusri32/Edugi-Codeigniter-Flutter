@@ -2,12 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:pasien/widgets/Login/Registrasi.dart';
-import 'package:pasien/widgets/DataTabel/ShowData.dart';
+import 'package:pasien/widgets/DataTabel/PasienData.dart';
 
 class LoginUser extends StatefulWidget{
-LoginUserState createState() => LoginUserState();
-
+  LoginUserState createState() => LoginUserState();
 }
 
 class LoginUserState extends State{
@@ -215,27 +213,6 @@ class LoginUserState extends State{
                               textColor: Colors.white,
                               padding: EdgeInsets.fromLTRB(9, 9, 9, 9),
                               child: Text('Masuk'),
-                            ),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Container(
-                                  child: Text('Belum Punya Akun ? ',
-                                      style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)
-                                  )
-                                ),
-                                Container(
-                                    child: InkWell(
-                                      onTap: (){
-                                        Navigator.push(context, MaterialPageRoute(builder: (context) => RegistrasiUser()));
-                                      },
-                                      child: new Padding(padding: new EdgeInsets.all(10.0),
-                                        child: new Text('Daftar Disini',
-                                            style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.blue)),
-                                    ),
-                                ),
-                                ),
-                              ],
                             ),
                           ],
                         ),

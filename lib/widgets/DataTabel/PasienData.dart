@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pasien/widgets/Login/LoginUser.dart';
 import 'package:pasien/widgets/DataTabel/Pasien.dart';
-import 'package:pasien/widgets/DataTabel/Services.dart';
+import 'package:pasien/widgets/DataTabel/PasienServices.dart';
 
 class DataTabelDemo extends StatefulWidget {
   DataTabelDemo() : super();
@@ -41,7 +41,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
 
   _createTable() {
     _showProgress('Perbarui Tabel...');
-    Services.createTable().then((result) {
+    PasienServices.createTable().then((result) {
       if ('success' == result) {
         showSnackBar(context, result);
         _getPasiens();
@@ -56,7 +56,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
       return;
     }
     _showProgress('Menambahkan Data...');
-    Services.addPasien(_identitasController.text, _statusController.text)
+    PasienServices.addPasien(_identitasController.text, _statusController.text)
         .then((result) {
       if ('success' == result) {
         _getPasiens();
@@ -67,7 +67,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
 
   _getPasiens() {
     _showProgress('Loading Data...');
-    Services.getPasiens().then((pasiens) {
+    PasienServices.getPasiens().then((pasiens) {
       setState(() {
         _pasiens = pasiens;
       });
@@ -78,7 +78,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
 
   _deletePasien(Pasien pasien) {
     _showProgress('Hapus Data...');
-    Services.deletePasien(pasien.id).then((result) {
+    PasienServices.deletePasien(pasien.id).then((result) {
       if ('success' == result) {
         AlertDialog alert = AlertDialog(
             content: Text("Data Berhasil Dihapus"),);
@@ -92,7 +92,7 @@ class DataTabelDemoState extends State<DataTabelDemo> {
 
   _updatePasien(Pasien pasien) {
     _showProgress('Perbarui Data...');
-    Services.updatePasien(
+    PasienServices.updatePasien(
         pasien.id, _identitasController.text, _statusController.text)
         .then((result) {
       if ('success' == result) {
