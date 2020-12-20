@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:pasien/widgets/DataTabel/PasienData.dart';
+import 'package:pasien/widgets/DataTabel/UserData.dart';
 
 class LoginUser extends StatefulWidget{
   LoginUserState createState() => LoginUserState();
