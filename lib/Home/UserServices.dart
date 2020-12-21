@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:datauser/widgets/DataTabel/User.dart';
+import 'package:datauser/Home/User.dart';
 
 class UserServices {
   static const ROOT = 'http://10.0.2.2/web_restapi/action.php';

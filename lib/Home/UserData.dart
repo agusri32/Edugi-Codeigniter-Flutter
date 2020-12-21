@@ -1,18 +1,19 @@
 import 'package:flutter/material.dart';
-import 'package:datauser/widgets/DataTabel/User.dart';
-import 'package:datauser/widgets/DataTabel/UserData.dart';
-import 'package:datauser/widgets/DataTabel/UserServices.dart';
+import 'package:datauser/Login/LoginUser.dart';
+import 'package:datauser/Home/User.dart';
+import 'package:datauser/Home/Userform.dart';
+import 'package:datauser/Home/UserServices.dart';
 
-class DataForm extends StatefulWidget {
-  DataForm() : super();
+class DataTabel extends StatefulWidget {
+  DataTabel() : super();
 
-  final String title = "Form Data User";
+  final String title = "View Data User";
 
   @override
   DataTabelState createState() => DataTabelState();
 }
 
-class DataTabelState extends State<DataForm> {
+class DataTabelState extends State<DataTabel> {
   List<User> _users;
   GlobalKey<ScaffoldState> _scaffoldKey;
   TextEditingController _namaController;
@@ -265,6 +266,22 @@ class DataTabelState extends State<DataForm> {
                 ),
 
                 Container(
+                  padding: const EdgeInsets.all(15.0),
+                  child: FlatButton(
+                    padding: EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0)
+                    ),
+                    color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    child: Text('UPDATE'),
+                    onPressed: () {
+                      _updateUser(_selectedUser);
+                    },
+                  ),
+                ),
+
+                Container(
                   padding: const EdgeInsets.all((15.0)),
                   child: FlatButton(
                     color: Colors.lightBlueAccent,
@@ -275,10 +292,10 @@ class DataTabelState extends State<DataForm> {
                     ),
                     child: Text('CANCEL'),
                     onPressed: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => DataTabel())
-                      );
+                      setState(() {
+                        _isUpdating = false;
+                      });
+                      _clearValues();
                     },
                   ),
                 ),
@@ -286,9 +303,61 @@ class DataTabelState extends State<DataForm> {
               ],
             ),
 
+            Container(
+              margin: const EdgeInsets.only(top: 30.0, bottom: 20.0),
+              child: Center(
+                child: Text(
+                  'DATA USER',
+                  style: new TextStyle(
+                    //decoration: TextDecoration.underline,
+                    decorationStyle: TextDecorationStyle.double,
+                    fontSize: 30.0,
+                    color: Colors.deepPurpleAccent
+                  ),
+                ),
+              ),
+            ),
+
+            Container(
+              width: 350,
+              child: Align(
+                alignment: Alignment.topRight,
+                child: FlatButton(
+                  color: Colors.redAccent,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(18.0),
+                  ),
+                  textColor: Colors.white,
+                  child: Text("LOGOUT"),
+                  onPressed: (){
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginUser())
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            Expanded(
+              child: _dataBody(),
+            )
+
           ],
         ),
       ),
+
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Colors.lightBlueAccent,
+        onPressed: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => DataForm())
+          );
+        },
+        child: Icon(Icons.add),
+      ),
+
     );
   }
 }
