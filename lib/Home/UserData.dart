@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:datauser/Login/LoginUser.dart';
 import 'package:datauser/Home/User.dart';
 import 'package:datauser/Home/UserInput.dart';
+import 'package:datauser/Home/UserEdit.dart';
 import 'package:datauser/Home/UserServices.dart';
 
 class DataTabel extends StatefulWidget {
@@ -19,14 +20,12 @@ class DataTabelState extends State<DataTabel> {
   TextEditingController _namaController;
   TextEditingController _nikController;
   User _selectedUser;
-  bool _isUpdating;
   String _titleProgress;
 
   @override
   void initState() {
     super.initState();
     _users = [];
-    _isUpdating = false;
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey();
     _namaController = TextEditingController();
@@ -56,28 +55,22 @@ class DataTabelState extends State<DataTabel> {
       print("Kolom Kosong");
       return;
     }
+
     _showProgress('Menambahkan Data...');
-    UserServices.addUser(_namaController.text, _nikController.text)
-        .then((result) {
+    UserServices.addUser(_namaController.text, _nikController.text).then((result) {
       if ('success' == result) {
         _getUsers();
+        _clearValues();
       }
-      _clearValues();
     });
   }
 
   _updateUser(User user) {
     _showProgress('Perbarui Data...');
-    UserServices.updateUser(
-        user.user_id, _namaController.text, _nikController.text)
-        .then((result) {
+    UserServices.updateUser(user.user_id, _namaController.text, _nikController.text).then((result) {
       if ('success' == result) {
         _getUsers();
-        setState(() {
-          _isUpdating = false;
-        });
-        _namaController.text = '';
-        _nikController.text = '';
+        _clearValues();
       }
     });
   }
@@ -86,8 +79,6 @@ class DataTabelState extends State<DataTabel> {
     _showProgress('Hapus Data...');
     UserServices.deleteUser(user.user_id).then((result) {
       if ('success' == result) {
-        AlertDialog alert = AlertDialog(
-          content: Text("Data Berhasil Dihapus"),);
         setState(() {
           _users.remove(user);
         });
@@ -99,9 +90,6 @@ class DataTabelState extends State<DataTabel> {
   _setValues(User user) {
     _namaController.text = user.user_nama;
     _nikController.text = user.user_nik;
-    setState(() {
-      _isUpdating = true;
-    });
   }
 
   _clearValues() {
@@ -131,6 +119,7 @@ class DataTabelState extends State<DataTabel> {
                   label: Text("OPTION"),
                   numeric: false),
             ],
+
             rows: _users
                 .map(
                   (user) => DataRow(
@@ -138,33 +127,25 @@ class DataTabelState extends State<DataTabel> {
 
                   DataCell(
                     Text(user.user_id),
+
+                    //pindah ke form edit
                     onTap: () {
-                      print("Tapped " + user.user_nama);
                       _setValues(user);
                       _selectedUser = user;
                     },
+
                   ),
 
                   DataCell(
                     Text(
                       user.user_nama.toUpperCase(),
                     ),
-                    onTap: () {
-                      print("Tapped " + user.user_nama);
-                      _setValues(user);
-                      _selectedUser = user;
-                    },
                   ),
 
                   DataCell(
                     Text(
                       user.user_nik.toUpperCase(),
                     ),
-                    onTap: () {
-                      print("Tapped " + user.user_nama);
-                      _setValues(user);
-                      _selectedUser = user;
-                    },
                   ),
 
                   DataCell(
@@ -174,9 +155,6 @@ class DataTabelState extends State<DataTabel> {
                         _deleteUser(user);
                       },
                     ),
-                    onTap: () {
-                      print("Tapped " + user.user_nama);
-                    },
                   ),
 
                 ],
@@ -292,9 +270,6 @@ class DataTabelState extends State<DataTabel> {
                     ),
                     child: Text('CANCEL'),
                     onPressed: () {
-                      setState(() {
-                        _isUpdating = false;
-                      });
                       _clearValues();
                     },
                   ),
@@ -352,7 +327,7 @@ class DataTabelState extends State<DataTabel> {
         onPressed: () {
           Navigator.push(
               context,
-              MaterialPageRoute(builder: (context) => DataForm())
+              MaterialPageRoute(builder: (context) => DataInput())
           );
         },
         child: Icon(Icons.add),
