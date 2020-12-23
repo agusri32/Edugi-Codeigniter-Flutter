@@ -130,8 +130,19 @@ class DataTabelState extends State<DataTabel> {
 
                     //pindah ke form edit
                     onTap: () {
-                      _setValues(user);
-                      _selectedUser = user;
+                      //_setValues(user);
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DataForm(
+                                _namaController, _nikController
+                            )
+                        ),
+                      );
+
+                      // _setValues(user);
+                      // _selectedUser = user;
                     },
 
                   ),

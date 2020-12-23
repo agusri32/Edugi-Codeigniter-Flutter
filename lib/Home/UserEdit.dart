@@ -4,12 +4,13 @@ import 'package:datauser/Home/UserData.dart';
 import 'package:datauser/Home/UserServices.dart';
 
 class DataForm extends StatefulWidget {
-  DataForm() : super();
+  TextEditingController namaController, nikController;
+  DataForm(this.namaController, this.nikController) : super();
 
   final String title = "Form Edit User";
 
   @override
-  DataTabelState createState() => DataTabelState();
+  DataTabelState createState() => DataTabelState(namaController, nikController);
 }
 
 class DataTabelState extends State<DataForm> {
@@ -19,6 +20,9 @@ class DataTabelState extends State<DataForm> {
   TextEditingController _nikController;
   User _selectedUser;
   String _titleProgress;
+
+  TextEditingController namaController, nikController;
+  DataTabelState(this.namaController, this.nikController);
 
   @override
   void initState() {
@@ -68,7 +72,7 @@ class DataTabelState extends State<DataForm> {
               padding: EdgeInsets.all(20.0),
               child: TextField(
                 cursorColor: Colors.blueAccent,
-                controller: _namaController,
+                controller: namaController,
                 style: TextStyle(color: Colors.blueAccent),
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -86,7 +90,7 @@ class DataTabelState extends State<DataForm> {
               child: TextField(
                 cursorColor: Colors.blueAccent,
                 style: TextStyle(color: Colors.blueAccent),
-                controller: _nikController,
+                controller: nikController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue,
