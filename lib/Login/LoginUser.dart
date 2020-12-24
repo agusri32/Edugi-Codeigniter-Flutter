@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:datauser/Home/UserData.dart';
+import 'package:datauser/Home2/ShowData.dart';
 
 class LoginUser extends StatefulWidget{
   LoginUserState createState() => LoginUserState();
@@ -30,7 +30,7 @@ class LoginUserState extends State{
     String email = emailController.text;
     String password = passwordController.text;
 
-    var url = 'http://10.0.2.2/web_restapi/login.php';
+    var url = 'http://10.0.2.2:88/web_restapi/api1/login.php';
     var data = {'email': email, 'password' : password};
     var response = await http.post(url, body: json.encode(data));
     var message = jsonDecode(response.body);
@@ -45,7 +45,7 @@ class LoginUserState extends State{
       //saat berhasil login
       Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => DataTabel())
+          MaterialPageRoute(builder: (context) => DataView())
       );
 
     }else{
@@ -107,7 +107,7 @@ class LoginUserState extends State{
 
                             Padding(
                                 padding: const EdgeInsets.all(12.0),
-                                child: Text('LOGIN USER',
+                                child: Text('LOGIN ADMIN',
                                     style: TextStyle(fontSize: 21, fontWeight: FontWeight.bold, color: Colors.white)
                                 )
                             ),

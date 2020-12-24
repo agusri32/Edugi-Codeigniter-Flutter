@@ -5,7 +5,7 @@ import 'package:datauser/Home1/UserServices.dart';
 class DataInput extends StatefulWidget {
   DataInput() : super();
 
-  final String title = "Input Data User";
+  final String title = "ADD DATA";
 
   @override
   DataTabelState createState() => DataTabelState();
@@ -93,7 +93,7 @@ class DataTabelState extends State<DataInput> {
                     borderSide: BorderSide(color: Colors.blue,
                     width: 2.0)
                   ),
-                  labelText: "Nomor NIK",
+                  labelText: "Kode Member",
                   labelStyle: TextStyle(color: Colors.blueAccent)
                 ),
               ),

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:datauser/Home2/ShowData.dart';
 
 class AddData extends StatefulWidget {
   @override
@@ -9,71 +9,95 @@ class AddData extends StatefulWidget {
 
 class _AddDataState extends State<AddData> {
 
-TextEditingController controllerCode = new TextEditingController();
-TextEditingController controllerName = new TextEditingController();
-TextEditingController controllerPrice = new TextEditingController();
-TextEditingController controllerStock = new TextEditingController();
+  TextEditingController controllerCode = new TextEditingController();
+  TextEditingController controllerName = new TextEditingController();
 
-void addData(){
-  var url="http://10.0.2.2:88/web_crud/adddata.php";
-  //var url="https://api.yourdomain.com/adddata.php";
+  void addData(){
+    var url="http://10.0.2.2:88/web_restapi/api2/adddata.php";
 
-  http.post(url, body: {
-    "itemcode": controllerCode.text,
-    "itemname": controllerName.text,
-    "price": controllerPrice.text,
-    "stock": controllerStock.text
-  });
-}
+    http.post(url, body: {
+      "user_nik": controllerCode.text,
+      "user_nama": controllerName.text,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+
       appBar: new AppBar(
         title: new Text("ADD DATA"),
+        backgroundColor: Colors.green,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListView(
           children: <Widget>[
+
             new Column(
               children: <Widget>[
+
                 new TextField(
                   controller: controllerCode,
                   decoration: new InputDecoration(
-                      hintText: "Item Code", labelText: "Item Code"),
+                      labelText: "Kode Member"),
                 ),
+
                 new TextField(
                   controller: controllerName,
                   decoration: new InputDecoration(
-                      hintText: "Item Name", labelText: "Item Name"),
+                      labelText: "Nama Lengkap"),
                 ),
-                new TextField(
-                  controller: controllerPrice,
-                  decoration: new InputDecoration(
-                      hintText: "Price", labelText: "Price"),
-                ),
-                new TextField(
-                  controller: controllerStock,
-                  decoration: new InputDecoration(
-                      hintText: "Stock", labelText: "Stock"),
-                ),
+
                 new Padding(
                   padding: const EdgeInsets.all(10.0),
                 ),
+
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  child: FlatButton(
+                    padding: EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0)
+                    ),
+                    color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    child: Text('SAVE'),
+                    onPressed: () {
+                      addData();
+                      Navigator.of(context).push(
+                          new MaterialPageRoute(
+                              builder: (BuildContext context)=> new DataView()
+                          )
+                      );
+                    },
+                  ),
+                ),
+
+                /*
                 new RaisedButton(
-                  child: new Text("ADD DATA"),
+                  child: new Text("SAVE"),
                   color: Colors.blue,
                   onPressed: () {
                     addData();
-                    Navigator.pop(context);
+                    Navigator.of(context).push(
+                      new MaterialPageRoute(
+                        builder: (BuildContext context)=> new DataView()
+                      )
+                    );
                   },
                 )
+                 */
+
               ],
             ),
+
           ],
         ),
+
       ),
     );
+
   }
 }

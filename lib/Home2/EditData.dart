@@ -4,84 +4,95 @@ import 'package:datauser/Home2/ShowData.dart';
 
 class EditData extends StatefulWidget {
 
-final List list;
-final int index;
+  final List list;
+  final int index;
 
-EditData({this.list,this.index});
+  EditData({this.list,this.index});
 
   @override
   _EditDataState createState() => _EditDataState();
+
 }
 
 class _EditDataState extends State<EditData> {
 
+  TextEditingController controllerCode;
+  TextEditingController controllerName;
 
-TextEditingController controllerCode;
-TextEditingController controllerName;
-TextEditingController controllerPrice;
-TextEditingController controllerStock;
+  void editData(){
+    var url="http://10.0.2.2:88/web_restapi/api2/editdata.php";
 
-
-void editData(){
-  var url="http://10.0.2.2:88/web_crud/editdata.php";
-  //var url="https://api.yourdomain.com/editdata.php";
-
-  http.post(url,body: {
-    "id": widget.list[widget.index]['id'],
-    "itemcode": controllerCode.text,
-    "itemname": controllerName.text,
-    "price": controllerPrice.text,
-    "stock": controllerStock.text
-  });
-}
+    http.post(url,body: {
+      "user_id": widget.list[widget.index]['user_id'],
+      "user_nik": controllerCode.text,
+      "user_nama": controllerName.text,
+    });
+  }
 
   @override
   void initState(){
-    controllerCode= new TextEditingController(text: widget.list[widget.index]['item_code']);
-    controllerName= new TextEditingController(text: widget.list[widget.index]['item_name']);
-    controllerPrice= new TextEditingController(text: widget.list[widget.index]['price']);
-    controllerStock= new TextEditingController(text: widget.list[widget.index]['stock']);
+    controllerCode = new TextEditingController(text: widget.list[widget.index]['user_nik']);
+    controllerName = new TextEditingController(text: widget.list[widget.index]['user_nama']);
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
+
       appBar: new AppBar(
         title: new Text("EDIT DATA"),
+        backgroundColor: Colors.green,
       ),
+
       body: Padding(
         padding: const EdgeInsets.all(10.0),
         child: ListView(
           children: <Widget>[
+
             new Column(
               children: <Widget>[
+
                 new TextField(
                   controller: controllerCode,
                   decoration: new InputDecoration(
-                      hintText: "Item Code", labelText: "Item Code"),
+                      labelText: "Kode Member"),
                 ),
+
                 new TextField(
                   controller: controllerName,
                   decoration: new InputDecoration(
-                      hintText: "Item Name", labelText: "Item Name"),
+                      labelText: "Nama Lengkap"),
                 ),
-                new TextField(
-                  controller: controllerPrice,
-                  decoration: new InputDecoration(
-                      hintText: "Price", labelText: "Price"),
-                ),
-                new TextField(
-                  controller: controllerStock,
-                  decoration: new InputDecoration(
-                      hintText: "Stock", labelText: "Stock"),
-                ),
+
                 new Padding(
                   padding: const EdgeInsets.all(10.0),
                 ),
+
+                Container(
+                  padding: const EdgeInsets.all(15.0),
+                  child: FlatButton(
+                    padding: EdgeInsets.all(8.0),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(18.0)
+                    ),
+                    color: Colors.blueAccent,
+                    textColor: Colors.white,
+                    child: Text('UPDATE'),
+                    onPressed: () {
+                      editData();
+                      Navigator.of(context).push(
+                        new MaterialPageRoute(
+                            builder: (BuildContext context)=> new DataView()
+                        )
+                      );
+                    },
+                  ),
+                ),
+
+                /*
                 new RaisedButton(
-                  child: new Text("EDIT DATA"),
+                  child: new Text("UPDATE"),
                   color: Colors.blue,
                   onPressed: () {
                     editData();
@@ -92,11 +103,16 @@ void editData(){
                     );
                   },
                 )
+                 */
+
               ],
             ),
+
           ],
         ),
+
       ),
     );
+
   }
 }

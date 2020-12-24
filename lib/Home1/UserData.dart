@@ -8,7 +8,7 @@ import 'package:datauser/Home1/UserServices.dart';
 class DataTabel extends StatefulWidget {
   DataTabel() : super();
 
-  final String title = "View Data User";
+  final String title = "VIEW DATA";
 
   @override
   DataTabelState createState() => DataTabelState();
@@ -113,7 +113,7 @@ class DataTabelState extends State<DataTabel> {
                   label: Text("NAMA LENGKAP"),
                   numeric: false),
               DataColumn(
-                  label: Text("NOMOR NIK"),
+                  label: Text("Kode Member"),
                   numeric: false),
               DataColumn(
                   label: Text("OPTION"),
@@ -230,7 +230,7 @@ class DataTabelState extends State<DataTabel> {
                     borderSide: BorderSide(color: Colors.blue,
                     width: 2.0)
                   ),
-                  labelText: "Nomor NIK",
+                  labelText: "Kode Member",
                   labelStyle: TextStyle(color: Colors.blueAccent)
                 ),
               ),
@@ -294,7 +294,7 @@ class DataTabelState extends State<DataTabel> {
               margin: const EdgeInsets.only(top: 30.0, bottom: 20.0),
               child: Center(
                 child: Text(
-                  'DATA USER',
+                  'DATA MEMBER',
                   style: new TextStyle(
                     //decoration: TextDecoration.underline,
                     decorationStyle: TextDecorationStyle.double,

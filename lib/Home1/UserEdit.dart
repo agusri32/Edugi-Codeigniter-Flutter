@@ -7,7 +7,7 @@ class DataForm extends StatefulWidget {
   TextEditingController namaController, nikController;
   DataForm(this.namaController, this.nikController) : super();
 
-  final String title = "Form Edit User";
+  final String title = "EDIT DATA";
 
   @override
   DataTabelState createState() => DataTabelState(namaController, nikController);
@@ -96,7 +96,7 @@ class DataTabelState extends State<DataForm> {
                     borderSide: BorderSide(color: Colors.blue,
                     width: 2.0)
                   ),
-                  labelText: "Nomor NIK",
+                  labelText: "Kode Member",
                   labelStyle: TextStyle(color: Colors.blueAccent)
                 ),
               ),
