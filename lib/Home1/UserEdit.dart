@@ -1,25 +1,33 @@
 import 'package:flutter/material.dart';
-import 'package:datauser/Home/UserData.dart';
-import 'package:datauser/Home/UserServices.dart';
+import 'package:datauser/Home1/User.dart';
+import 'package:datauser/Home1/UserData.dart';
+import 'package:datauser/Home1/UserServices.dart';
 
-class DataInput extends StatefulWidget {
-  DataInput() : super();
+class DataForm extends StatefulWidget {
+  TextEditingController namaController, nikController;
+  DataForm(this.namaController, this.nikController) : super();
 
-  final String title = "Input Data User";
+  final String title = "Form Edit User";
 
   @override
-  DataTabelState createState() => DataTabelState();
+  DataTabelState createState() => DataTabelState(namaController, nikController);
 }
 
-class DataTabelState extends State<DataInput> {
+class DataTabelState extends State<DataForm> {
+  List<User> _users;
   GlobalKey<ScaffoldState> _scaffoldKey;
   TextEditingController _namaController;
   TextEditingController _nikController;
+  User _selectedUser;
   String _titleProgress;
+
+  TextEditingController namaController, nikController;
+  DataTabelState(this.namaController, this.nikController);
 
   @override
   void initState() {
     super.initState();
+    _users = [];
     _titleProgress = widget.title;
     _scaffoldKey = GlobalKey();
     _namaController = TextEditingController();
@@ -32,14 +40,9 @@ class DataTabelState extends State<DataInput> {
     });
   }
 
-  _addUser() {
-    if (_namaController.text.trim().isEmpty || _nikController.text.trim().isEmpty) {
-      //ganti dengan warning dialog
-      print("Kolom Kosong");
-      return;
-    }
-    _showProgress('Menambahkan Data...');
-    UserServices.addUser(_namaController.text, _nikController.text).then((result) {
+  _updateUser(User user) {
+    _showProgress('Perbarui Data...');
+    UserServices.updateUser(user.user_id, _namaController.text, _nikController.text).then((result) {
       if ('success' == result) {
         Navigator.push(
             context,
@@ -69,7 +72,7 @@ class DataTabelState extends State<DataInput> {
               padding: EdgeInsets.all(20.0),
               child: TextField(
                 cursorColor: Colors.blueAccent,
-                controller: _namaController,
+                controller: namaController,
                 style: TextStyle(color: Colors.blueAccent),
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -87,7 +90,7 @@ class DataTabelState extends State<DataInput> {
               child: TextField(
                 cursorColor: Colors.blueAccent,
                 style: TextStyle(color: Colors.blueAccent),
-                controller: _nikController,
+                controller: nikController,
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.blue,
@@ -109,11 +112,11 @@ class DataTabelState extends State<DataInput> {
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(18.0)
                     ),
-                    color: Colors.lightGreen,
+                    color: Colors.blueAccent,
                     textColor: Colors.white,
-                    child: Text('SAVE'),
+                    child: Text('UPDATE'),
                     onPressed: () {
-                      _addUser();
+                      _updateUser(_selectedUser);
                     },
                   ),
                 ),

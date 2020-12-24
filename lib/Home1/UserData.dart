@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:datauser/Login/LoginUser.dart';
-import 'package:datauser/Home/User.dart';
-import 'package:datauser/Home/UserInput.dart';
-import 'package:datauser/Home/UserEdit.dart';
-import 'package:datauser/Home/UserServices.dart';
+import 'package:datauser/Home1/User.dart';
+import 'package:datauser/Home1/UserInput.dart';
+import 'package:datauser/Home1/UserEdit.dart';
+import 'package:datauser/Home1/UserServices.dart';
 
 class DataTabel extends StatefulWidget {
   DataTabel() : super();
@@ -130,8 +130,8 @@ class DataTabelState extends State<DataTabel> {
 
                     //pindah ke form edit
                     onTap: () {
-                      //_setValues(user);
 
+                      /*
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -140,9 +140,10 @@ class DataTabelState extends State<DataTabel> {
                             )
                         ),
                       );
+                      */
 
-                      // _setValues(user);
-                      // _selectedUser = user;
+                      _setValues(user);
+                      _selectedUser = user;
                     },
 
                   ),
