@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:datauser/Login/LoginUser.dart';
 import 'package:datauser/Home1/User.dart';
 import 'package:datauser/Home1/UserInput.dart';
-import 'package:datauser/Home1/UserEdit.dart';
+//import 'package:datauser/Home1/UserEdit.dart';
 import 'package:datauser/Home1/UserServices.dart';
 
 class DataTabel extends StatefulWidget {
@@ -51,13 +51,15 @@ class DataTabelState extends State<DataTabel> {
   }
 
   _addUser() {
-    if (_namaController.text.trim().isEmpty || _nikController.text.trim().isEmpty) {
+    if (_namaController.text.trim().isEmpty ||
+        _nikController.text.trim().isEmpty) {
       print("Kolom Kosong");
       return;
     }
 
     _showProgress('Menambahkan Data...');
-    UserServices.addUser(_namaController.text, _nikController.text).then((result) {
+    UserServices.addUser(_namaController.text, _nikController.text)
+        .then((result) {
       if ('success' == result) {
         _getUsers();
         _clearValues();
@@ -67,7 +69,9 @@ class DataTabelState extends State<DataTabel> {
 
   _updateUser(User user) {
     _showProgress('Perbarui Data...');
-    UserServices.updateUser(user.user_id, _namaController.text, _nikController.text).then((result) {
+    UserServices.updateUser(
+            user.user_id, _namaController.text, _nikController.text)
+        .then((result) {
       if ('success' == result) {
         _getUsers();
         _clearValues();
@@ -106,32 +110,21 @@ class DataTabelState extends State<DataTabel> {
           padding: const EdgeInsets.all(10.0),
           child: DataTable(
             columns: [
-              DataColumn(
-                  label: Text("ID"),
-                  numeric: false),
-              DataColumn(
-                  label: Text("NAMA LENGKAP"),
-                  numeric: false),
-              DataColumn(
-                  label: Text("Kode Member"),
-                  numeric: false),
-              DataColumn(
-                  label: Text("OPTION"),
-                  numeric: false),
+              DataColumn(label: Text("ID"), numeric: false),
+              DataColumn(label: Text("NAMA LENGKAP"), numeric: false),
+              DataColumn(label: Text("Kode Member"), numeric: false),
+              DataColumn(label: Text("OPTION"), numeric: false),
             ],
-
             rows: _users
                 .map(
                   (user) => DataRow(
-                cells: [
+                    cells: [
+                      DataCell(
+                        Text(user.user_id),
 
-                  DataCell(
-                    Text(user.user_id),
-
-                    //pindah ke form edit
-                    onTap: () {
-
-                      /*
+                        //pindah ke form edit
+                        onTap: () {
+                          /*
                       Navigator.push(
                         context,
                         MaterialPageRoute(
@@ -142,36 +135,31 @@ class DataTabelState extends State<DataTabel> {
                       );
                       */
 
-                      _setValues(user);
-                      _selectedUser = user;
-                    },
-
+                          _setValues(user);
+                          _selectedUser = user;
+                        },
+                      ),
+                      DataCell(
+                        Text(
+                          user.user_nama.toUpperCase(),
+                        ),
+                      ),
+                      DataCell(
+                        Text(
+                          user.user_nik.toUpperCase(),
+                        ),
+                      ),
+                      DataCell(
+                        IconButton(
+                          icon: Icon(Icons.delete),
+                          onPressed: () {
+                            _deleteUser(user);
+                          },
+                        ),
+                      ),
+                    ],
                   ),
-
-                  DataCell(
-                    Text(
-                      user.user_nama.toUpperCase(),
-                    ),
-                  ),
-
-                  DataCell(
-                    Text(
-                      user.user_nik.toUpperCase(),
-                    ),
-                  ),
-
-                  DataCell(
-                    IconButton(
-                      icon: Icon(Icons.delete),
-                      onPressed: () {
-                        _deleteUser(user);
-                      },
-                    ),
-                  ),
-
-                ],
-              ),
-            )
+                )
                 .toList(),
           ),
         ),
@@ -196,12 +184,10 @@ class DataTabelState extends State<DataTabel> {
           ),
         ],
       ),
-
       body: Container(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-
             Container(
               padding: EdgeInsets.all(20.0),
               child: TextField(
@@ -209,13 +195,10 @@ class DataTabelState extends State<DataTabel> {
                 controller: _namaController,
                 style: TextStyle(color: Colors.blueAccent),
                 decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue,
-                    width: 2.0)
-                  ),
-                  labelText: "Nama Lengkap",
-                  labelStyle: TextStyle(color: Colors.blueAccent)
-                ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2.0)),
+                    labelText: "Nama Lengkap",
+                    labelStyle: TextStyle(color: Colors.blueAccent)),
               ),
             ),
 
@@ -226,13 +209,10 @@ class DataTabelState extends State<DataTabel> {
                 style: TextStyle(color: Colors.blueAccent),
                 controller: _nikController,
                 decoration: InputDecoration(
-                  focusedBorder: OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.blue,
-                    width: 2.0)
-                  ),
-                  labelText: "Kode Member",
-                  labelStyle: TextStyle(color: Colors.blueAccent)
-                ),
+                    focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.blue, width: 2.0)),
+                    labelText: "Kode Member",
+                    labelStyle: TextStyle(color: Colors.blueAccent)),
               ),
             ),
 
@@ -244,8 +224,7 @@ class DataTabelState extends State<DataTabel> {
                   child: FlatButton(
                     padding: EdgeInsets.all(8.0),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)
-                    ),
+                        borderRadius: BorderRadius.circular(18.0)),
                     color: Colors.lightGreen,
                     textColor: Colors.white,
                     child: Text('SAVE'),
@@ -254,14 +233,12 @@ class DataTabelState extends State<DataTabel> {
                     },
                   ),
                 ),
-
                 Container(
                   padding: const EdgeInsets.all(15.0),
                   child: FlatButton(
                     padding: EdgeInsets.all(8.0),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)
-                    ),
+                        borderRadius: BorderRadius.circular(18.0)),
                     color: Colors.blueAccent,
                     textColor: Colors.white,
                     child: Text('UPDATE'),
@@ -270,7 +247,6 @@ class DataTabelState extends State<DataTabel> {
                     },
                   ),
                 ),
-
                 Container(
                   padding: const EdgeInsets.all((15.0)),
                   child: FlatButton(
@@ -278,15 +254,13 @@ class DataTabelState extends State<DataTabel> {
                     textColor: Colors.white,
                     padding: EdgeInsets.all(8.0),
                     shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(18.0)
-                    ),
+                        borderRadius: BorderRadius.circular(18.0)),
                     child: Text('CANCEL'),
                     onPressed: () {
                       _clearValues();
                     },
                   ),
                 ),
-
               ],
             ),
 
@@ -296,11 +270,10 @@ class DataTabelState extends State<DataTabel> {
                 child: Text(
                   'DATA MEMBER',
                   style: new TextStyle(
-                    //decoration: TextDecoration.underline,
-                    decorationStyle: TextDecorationStyle.double,
-                    fontSize: 30.0,
-                    color: Colors.deepPurpleAccent
-                  ),
+                      //decoration: TextDecoration.underline,
+                      decorationStyle: TextDecorationStyle.double,
+                      fontSize: 30.0,
+                      color: Colors.deepPurpleAccent),
                 ),
               ),
             ),
@@ -316,11 +289,9 @@ class DataTabelState extends State<DataTabel> {
                   ),
                   textColor: Colors.white,
                   child: Text("LOGOUT"),
-                  onPressed: (){
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginUser())
-                    );
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => LoginUser()));
                   },
                 ),
               ),
@@ -329,22 +300,17 @@ class DataTabelState extends State<DataTabel> {
             Expanded(
               child: _dataBody(),
             )
-
           ],
         ),
       ),
-
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
           Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => DataInput())
-          );
+              context, MaterialPageRoute(builder: (context) => DataInput()));
         },
         child: Icon(Icons.add),
       ),
-
     );
   }
 }
