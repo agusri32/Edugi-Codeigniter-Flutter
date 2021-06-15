@@ -20,7 +20,7 @@ class _EditDataState extends State<EditData> {
   TextEditingController controllerName;
 
   void editData(){
-    var url="http://10.0.2.2:88/web_restapi/api2/editdata.php";
+    var url="https://restapi32.000webhostapp.com/web_login/api2/editdata.php";
 
     http.post(url,body: {
       "user_id": widget.list[widget.index]['user_id'],

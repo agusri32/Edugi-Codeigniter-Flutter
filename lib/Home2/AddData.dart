@@ -13,7 +13,7 @@ class _AddDataState extends State<AddData> {
   TextEditingController controllerName = new TextEditingController();
 
   void addData(){
-    var url="http://10.0.2.2:88/web_restapi/api2/adddata.php";
+    var url="https://restapi32.000webhostapp.com/web_login/api2/adddata.php";
 
     http.post(url, body: {
       "user_nik": controllerCode.text,

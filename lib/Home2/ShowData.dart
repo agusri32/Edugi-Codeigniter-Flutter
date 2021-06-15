@@ -16,14 +16,14 @@ class DataView extends StatefulWidget {
 
 class DataViewState extends State<DataView> {
   Future<List> getData() async {
-    final response = await http.get("http://10.0.2.2:88/web_restapi/api2/getdata.php");
+    final response = await http.get(
+        "https://restapi32.000webhostapp.com/web_login/api2/getdata.php");
     return json.decode(response.body);
   }
 
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-
       appBar: new AppBar(
         title: new Text("VIEW DATA"),
         automaticallyImplyLeading: false,
@@ -32,35 +32,25 @@ class DataViewState extends State<DataView> {
           IconButton(
             icon: Icon(Icons.refresh),
             onPressed: () {
-              Navigator.of(context).push(
-                  new MaterialPageRoute(
-                      builder: (BuildContext context)=> new DataView()
-                  )
-              );
+              Navigator.of(context).push(new MaterialPageRoute(
+                  builder: (BuildContext context) => new DataView()));
             },
           ),
-
           IconButton(
-            icon: Icon(Icons.logout),
-            onPressed: (){
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => LoginUser())
-              );
+            icon: Icon(Icons.exit_to_app),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => LoginUser()));
             },
           ),
         ],
       ),
-
       floatingActionButton: new FloatingActionButton(
         child: Icon(Icons.add),
-        onPressed: ()=>Navigator.of(context).push(
-          new MaterialPageRoute(
-            builder: (BuildContext context)=> new AddData(),
-          )
-        ),
+        onPressed: () => Navigator.of(context).push(new MaterialPageRoute(
+          builder: (BuildContext context) => new AddData(),
+        )),
       ),
-
       body: new FutureBuilder<List>(
         future: getData(),
         builder: (context, snapshot) {
@@ -75,7 +65,6 @@ class DataViewState extends State<DataView> {
                 );
         },
       ),
-
     );
   }
 }
@@ -90,29 +79,21 @@ class ItemList extends StatelessWidget {
       itemCount: list == null ? 0 : list.length,
       itemBuilder: (context, i) {
         return new Container(
-
           padding: const EdgeInsets.all(10.0),
           child: new GestureDetector(
             onTap: () => Navigator.of(context).push(new MaterialPageRoute(
                 builder: (BuildContext context) => new Detail(
-                  list: list,
-                  index: i,
-                )
-              )
-            ),
-
+                      list: list,
+                      index: i,
+                    ))),
             child: new Card(
                 child: new ListTile(
-                  title: new Text(list[i]['user_nama']),
-                  subtitle: new Text("Kode Member : ${list[i]['user_nik']}"),
-                )
-            ),
-
+              title: new Text(list[i]['user_nama']),
+              subtitle: new Text("Kode Member : ${list[i]['user_nik']}"),
+            )),
           ),
         );
-
       },
     );
-
   }
 }

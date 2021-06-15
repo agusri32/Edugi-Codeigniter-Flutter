@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:datauser/Home1/User.dart';
 
 class UserServices {
-  static const ROOT = 'http://10.0.2.2:88/web_restapi/api1/action.php';
+  static const ROOT = 'https://restapi32.000webhostapp.com/web_login/api1/action.php';
   static const String _GET_ACTION = 'GET_DATA';
   static const String _ADD_ACTION = 'ADD_DATA';
   static const String _UPDATE_ACTION = 'UPDATE_DATA';
